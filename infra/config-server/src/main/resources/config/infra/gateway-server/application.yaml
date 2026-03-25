@@ -3,15 +3,72 @@ spring:
     gateway:
       discovery.locator.enabled: true
       routes:
-        - id: category-main-service
+        - id: admin-categories
           uri: lb://main-service
           predicates:
-            - Path=/admin/categories/*
-        - id: user-main-service
+            - Path=/admin/categories/**,/admin/categories
+
+        - id: admin-users
           uri: lb://main-service
           predicates:
             - Path=/admin/users/**
 
+        - id: admin-compilations
+          uri: lb://main-service
+          predicates:
+            - Path=/admin/compilations/**
+
+        - id: admin-events
+          uri: lb://main-service
+          predicates:
+            - Path=/admin/events/**
+
+        - id: admin-moderation
+          uri: lb://main-service
+          predicates:
+            - Path=/admin/events/moderation,/admin/events/{eventId}/moderate
+
+        - id: public-categories
+          uri: lb://main-service
+          predicates:
+            - Path=/categories/**,/categories
+
+        - id: public-compilations
+          uri: lb://main-service
+          predicates:
+            - Path=/compilations/**,/compilations
+
+        - id: public-events
+          uri: lb://main-service
+          predicates:
+            - Path=/events/**,/events
+
+        - id: user-events
+          uri: lb://main-service
+          predicates:
+            - Path=/users/{userId}/events/**
+
+        - id: user-requests
+          uri: lb://main-service
+          predicates:
+            - Path=/users/{userId}/requests/**,/users/{userId}/requests
+
+        - id: user-moderation-comments
+          uri: lb://main-service
+          predicates:
+            - Path=/users/{userId}/events/{eventId}/moderation-comments
+
+        - id: stats-service-post
+          uri: lb://stats-server
+          predicates:
+            - Path=/hit
+            - Method=POST
+
+        - id: stats-service-get
+          uri: lb://stats-server
+          predicates:
+            - Path=/stats
+            - Method=GET
 
 server:
   port: 8080
