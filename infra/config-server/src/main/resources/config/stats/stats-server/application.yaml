@@ -1,0 +1,26 @@
+server:
+  port: 0
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/stats_stats_server;
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=1000,expireAfterWrite=5m
+
+logging:
+  level:
+    ru.yandex.practicum: DEBUG
+    org.springframework.web: INFO
+    org.hibernate: INFO
