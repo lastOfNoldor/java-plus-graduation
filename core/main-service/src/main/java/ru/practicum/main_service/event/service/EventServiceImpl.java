@@ -25,9 +25,9 @@ import ru.practicum.main_service.request.model.RequestStatus;
 import ru.practicum.main_service.request.repository.RequestRepository;
 import ru.practicum.main_service.user.model.User;
 import ru.practicum.main_service.user.service.UserService;
-import ru.practicum.stat_client.StatClient;
-import ru.practicum.stat_dto.EndpointHitDto;
-import ru.practicum.stat_dto.ViewStatsDto;
+import ru.practicum.stats_client.StatClient;
+import ru.practicum.stats_dto.EndpointHitDto;
+import ru.practicum.stats_dto.ViewStatsDto;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

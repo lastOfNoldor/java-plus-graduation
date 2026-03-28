@@ -1,4 +1,4 @@
-package ru.practicum.stat_dto;
+package ru.practicum.stats_dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

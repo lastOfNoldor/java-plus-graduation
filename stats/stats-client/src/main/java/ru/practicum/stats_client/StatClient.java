@@ -1,7 +1,7 @@
-package ru.practicum.stat_client;
+package ru.practicum.stats_client;
 
-import ru.practicum.stat_dto.EndpointHitDto;
-import ru.practicum.stat_dto.ViewStatsDto;
+import ru.practicum.stats_dto.EndpointHitDto;
+import ru.practicum.stats_dto.ViewStatsDto;
 
 import java.time.LocalDateTime;
 import java.util.List;

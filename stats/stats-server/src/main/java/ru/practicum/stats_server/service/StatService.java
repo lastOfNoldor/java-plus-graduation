@@ -1,13 +1,13 @@
-package ru.practicum.stat_server.service;
+package ru.practicum.stats_server.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.practicum.stat_dto.EndpointHitDto;
-import ru.practicum.stat_dto.ViewStatsDto;
-import ru.practicum.stat_server.exception.ValidationException;
-import ru.practicum.stat_server.mapper.StatMapper;
-import ru.practicum.stat_server.model.EndpointHit;
-import ru.practicum.stat_server.repository.StatRepository;
+import ru.practicum.stats_dto.EndpointHitDto;
+import ru.practicum.stats_dto.ViewStatsDto;
+import ru.practicum.stats_server.exception.ValidationException;
+import ru.practicum.stats_server.mapper.StatMapper;
+import ru.practicum.stats_server.model.EndpointHit;
+import ru.practicum.stats_server.repository.StatRepository;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

@@ -2,7 +2,7 @@ server:
   port: 0
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/core_main_service;
+    url: jdbc:postgresql://localhost:5432/core_main_service
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
@@ -24,3 +24,7 @@ logging:
     ru.yandex.practicum: DEBUG
     org.springframework.web: INFO
     org.hibernate: INFO
+
+discovery:
+  services:
+    stats-server-id: stats-server
