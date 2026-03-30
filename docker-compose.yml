@@ -28,7 +28,10 @@ services:
         echo "Waiting for PostgreSQL..."
         sleep 5
         PGPASSWORD=postgres psql -h postgres -U postgres -d postgres -v ON_ERROR_STOP=1 <<-EOSQL
-        CREATE DATABASE ewm_stat_service;
-        CREATE DATABASE ewm_main_service;
+        CREATE DATABASE stats_stats_server;
+        CREATE DATABASE core_main_service;
         EOSQL
         echo "Databases created successfully"
+
+volumes:
+  postgres_data:
