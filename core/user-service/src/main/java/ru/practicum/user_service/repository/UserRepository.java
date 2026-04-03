@@ -1,9 +1,9 @@
-package ru.practicum.main_service.user.repository;
+package ru.practicum.user_service.repository;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.practicum.main_service.user.model.User;
+import ru.practicum.user_service.model.User;
 
 import java.util.List;
 

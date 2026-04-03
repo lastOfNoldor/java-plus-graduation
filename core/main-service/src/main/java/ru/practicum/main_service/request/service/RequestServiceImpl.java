@@ -1,5 +1,6 @@
 package ru.practicum.main_service.request.service;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,6 @@ import ru.practicum.main_service.request.mapper.RequestMapper;
 import ru.practicum.main_service.request.model.Request;
 import ru.practicum.main_service.request.model.RequestStatus;
 import ru.practicum.main_service.request.repository.RequestRepository;
-import ru.practicum.main_service.user.model.User;
-import ru.practicum.main_service.user.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +32,6 @@ public class RequestServiceImpl implements RequestService {
     private static final String LIMIT_REACHED = "Достигнут лимит участников";
 
     private final RequestRepository requestRepository;
-    private final UserRepository userRepository;
     private final EventRepository eventRepository;
     private final RequestMapper requestMapper;
 
@@ -47,14 +45,11 @@ public class RequestServiceImpl implements RequestService {
     @Transactional
     public ParticipationRequestDto createRequest(RequestParamDto paramDto) {
         log.info("Создание заявки пользователя {} на событие {}", paramDto.getUserId(), paramDto.getEventId());
-
-        User user = userRepository.findById(paramDto.getUserId()).orElseThrow(() -> new NotFoundException(String.format("Пользователь с ID %s не найден", paramDto.getEventId())));
-
         Event event = eventRepository.findById(paramDto.getEventId()).orElseThrow(() -> new NotFoundException(String.format(EVENT_NOT_FOUND, paramDto.getEventId())));
 
         validateRequestCreation(paramDto.getUserId(), paramDto.getEventId(), event);
 
-        Request request = createRequestEntity(event, user);
+        Request request = createRequestEntity(event, paramDto.getUserId());
         Request savedRequest = requestRepository.save(request);
 
         log.info("Заявка создана с ID: {}", savedRequest.getId());
@@ -114,7 +109,7 @@ public class RequestServiceImpl implements RequestService {
             throw new ConflictException("Нельзя добавить повторный запрос");
         }
 
-        if (event.getInitiator().getId().equals(userId)) {
+        if (event.getInitiatorId().equals(userId)) {
             throw new ConflictException("Инициатор события не может добавить запрос на участие в своём событии");
         }
 
@@ -128,8 +123,8 @@ public class RequestServiceImpl implements RequestService {
         }
     }
 
-    private Request createRequestEntity(Event event, User user) {
-        Request request = requestMapper.toEntity(event, user);
+    private Request createRequestEntity(Event event, @NotNull Long userId) {
+        Request request = requestMapper.toEntity(event, userId);
 
         if (isRequestModerationNotRequired(event) || event.getParticipantLimit() == 0) {
             request.setStatus(RequestStatus.CONFIRMED);

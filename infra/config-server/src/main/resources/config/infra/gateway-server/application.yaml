@@ -9,7 +9,7 @@ spring:
             - Path=/admin/categories/**,/admin/categories
 
         - id: admin-users
-          uri: lb://main-service
+          uri: lb://user-service
           predicates:
             - Path=/admin/users/**
 

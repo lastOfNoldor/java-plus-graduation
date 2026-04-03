@@ -23,8 +23,6 @@ import ru.practicum.main_service.exception.NotFoundException;
 import ru.practicum.main_service.exception.ValidationException;
 import ru.practicum.main_service.request.model.RequestStatus;
 import ru.practicum.main_service.request.repository.RequestRepository;
-import ru.practicum.main_service.user.model.User;
-import ru.practicum.main_service.user.service.UserService;
 import ru.practicum.stats_client.StatClient;
 import ru.practicum.stats_dto.EndpointHitDto;
 import ru.practicum.stats_dto.ViewStatsDto;
@@ -48,7 +46,6 @@ public class EventServiceImpl implements EventService {
     private final CategoryService categoryService;
     private final EventMapper eventMapper;
     private final StatClient statClient;
-    private final UserService userService;
     private final ModerationCommentService moderationCommentService;
 
     @Value("${event.moderation.page-size:10}")
@@ -61,7 +58,6 @@ public class EventServiceImpl implements EventService {
     public List<EventShortDto> getEventsByUser(EventsByUserParams params) {
         log.debug("Получение событий пользователя: userId={}, from={}, size={}", params.getUserId(), params.getFrom(), params.getSize());
         Long userId = params.getUserId();
-        getUserById(userId);
         int from = params.getFrom();
         int size = params.getSize();
         Pageable pageable = PageRequest.of(from / size, size, Sort.by("id").ascending());
@@ -111,7 +107,6 @@ public class EventServiceImpl implements EventService {
     @Override
     @Transactional
     public EventFullDto createEvent(Long userId, NewEventDto newEventDto) {
-        User user = getUserById(userId);
         Category category = getCategoryById(newEventDto.getCategory());
 
         LocalDateTime now = LocalDateTime.now();
@@ -124,7 +119,7 @@ public class EventServiceImpl implements EventService {
             throw new ConflictException("Дата события должна быть не ранее чем через 2 часа от текущего момента");
         }
 
-        Event event = eventMapper.toNewEvent(newEventDto, category, user);
+        Event event = eventMapper.toNewEvent(newEventDto, category, userId);
 
         Event savedEvent = eventRepository.save(event);
         log.info("Создано новое событие с id: {}", savedEvent.getId());
@@ -155,7 +150,6 @@ public class EventServiceImpl implements EventService {
     public EventFullDto getEventByUser(EventByUserRequest request) {
         Long userId = request.getUserId();
         Long eventId = request.getEventId();
-        getUserById(userId);
         Event event = eventRepository.findByIdAndInitiatorId(eventId, userId).orElseThrow(() -> new NotFoundException("Событие с id=" + eventId + " не найдено"));
         Long views = getEventViews(event);
         Long eventRequests = getEventRequests(event);
@@ -166,10 +160,9 @@ public class EventServiceImpl implements EventService {
     public EventFullDto updateEventByUser(EventByUserRequest request, UpdateEventUserRequest updateEvent) {
         Long userId = request.getUserId();
         Long eventId = request.getEventId();
-        getUserById(userId);
         Event event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException("Событие с id=" + eventId + " не найдено"));
 
-        if (!event.getInitiator().getId().equals(userId)) {
+        if (!event.getInitiatorId().equals(userId)) {
             throw new NotFoundException("Событие с id=" + eventId + " не принадлежит пользователю");
         }
 
@@ -404,10 +397,6 @@ public class EventServiceImpl implements EventService {
         sendStats(request);
 
         return eventMapper.toEventFullDto(event, eventRequests, views);
-    }
-
-    private User getUserById(Long userId) {
-        return userService.getEntityById(userId);
     }
 
     private Category getCategoryById(Long categoryId) {

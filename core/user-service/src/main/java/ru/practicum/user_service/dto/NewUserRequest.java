@@ -1,4 +1,4 @@
-package ru.practicum.main_service.user.dto;
+package ru.practicum.user_service.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

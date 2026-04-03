@@ -11,8 +11,7 @@ import ru.practicum.main_service.event.dto.NewEventDto;
 import ru.practicum.main_service.event.dto.param.UpdateEventRequest;
 import ru.practicum.main_service.event.model.Event;
 import ru.practicum.main_service.event.model.EventState;
-import ru.practicum.main_service.user.mapper.UserMapper;
-import ru.practicum.main_service.user.model.User;
+import ru.practicum.user_service.mapper.UserMapper;
 
 import java.time.LocalDateTime;
 
@@ -77,8 +76,8 @@ public abstract class EventMapper {
     @Mapping(target = "createdOn", expression = "java(LocalDateTime.now())")
     @Mapping(target = "state", constant = "PENDING")
     @Mapping(target = "category", source = "category")
-    @Mapping(target = "initiator", source = "initiator")
+    @Mapping(target = "initiatorId", source = "initiatorId")
     @Mapping(target = "publishedOn", ignore = true)
-    public abstract Event toNewEvent(NewEventDto newEventDto, Category category, User initiator);
+    public abstract Event toNewEvent(NewEventDto newEventDto, Category category, Long initiatorId);
 
 }

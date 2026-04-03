@@ -1,11 +1,11 @@
-package ru.practicum.main_service.user.mapper;
+package ru.practicum.user_service.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import ru.practicum.main_service.user.dto.NewUserRequest;
-import ru.practicum.main_service.user.dto.UserDto;
-import ru.practicum.main_service.user.dto.UserShortDto;
-import ru.practicum.main_service.user.model.User;
+import ru.practicum.user_service.dto.NewUserRequest;
+import ru.practicum.user_service.dto.UserDto;
+import ru.practicum.user_service.dto.UserShortDto;
+import ru.practicum.user_service.model.User;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {

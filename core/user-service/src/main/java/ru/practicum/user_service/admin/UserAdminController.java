@@ -1,4 +1,4 @@
-package ru.practicum.main_service.user.admin;
+package ru.practicum.user_service.admin;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -6,9 +6,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.main_service.user.dto.NewUserRequest;
-import ru.practicum.main_service.user.dto.UserDto;
-import ru.practicum.main_service.user.service.UserService;
+import ru.practicum.user_service.dto.NewUserRequest;
+import ru.practicum.user_service.dto.UserDto;
+import ru.practicum.user_service.service.UserService;
 
 import java.util.List;
 
