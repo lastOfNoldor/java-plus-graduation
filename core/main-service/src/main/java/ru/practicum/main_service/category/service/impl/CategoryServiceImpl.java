@@ -13,8 +13,8 @@ import ru.practicum.main_service.category.model.Category;
 import ru.practicum.main_service.category.repository.CategoryRepository;
 import ru.practicum.main_service.category.service.CategoryService;
 import ru.practicum.main_service.event.repository.EventRepository;
-import ru.practicum.main_service.exception.ConflictException;
-import ru.practicum.main_service.exception.NotFoundException;
+import ru.practicum.interaction_api.exception.ConflictException;
+import ru.practicum.interaction_api.exception.NotFoundException;
 
 import java.util.List;
 import java.util.stream.Collectors;

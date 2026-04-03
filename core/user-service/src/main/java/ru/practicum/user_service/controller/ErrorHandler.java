@@ -1,4 +1,4 @@
-package ru.practicum.main_service.exception;
+package ru.practicum.user_service.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -7,6 +7,7 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import ru.practicum.interaction_api.exception.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

@@ -1,4 +1,4 @@
-package ru.practicum.main_service.exception;
+package ru.practicum.interaction_api.exception;
 
 public class ValidationException extends RuntimeException {
     public ValidationException(String message) {
