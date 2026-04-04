@@ -15,24 +15,21 @@ import ru.practicum.main_service.event.dto.*;
 import ru.practicum.main_service.event.dto.param.*;
 import ru.practicum.main_service.event.mapper.EventMapper;
 import ru.practicum.main_service.event.model.Event;
-import ru.practicum.main_service.event.model.EventState;
-import ru.practicum.main_service.event.model.StateAction;
+import ru.practicum.interaction_api.enums.EventState;
+import ru.practicum.interaction_api.enums.StateAction;
 import ru.practicum.main_service.event.repository.EventRepository;
 import ru.practicum.interaction_api.exception.ConflictException;
 import ru.practicum.interaction_api.exception.NotFoundException;
 import ru.practicum.interaction_api.exception.ValidationException;
-import ru.practicum.main_service.request.model.RequestStatus;
-import ru.practicum.main_service.request.repository.RequestRepository;
+import ru.practicum.interaction_api.enums.RequestStatus;
+import ru.practicum.requst_service.repository.RequestRepository;
 import ru.practicum.stats_client.StatClient;
 import ru.practicum.stats_dto.EndpointHitDto;
 import ru.practicum.stats_dto.ViewStatsDto;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -47,6 +44,7 @@ public class EventServiceImpl implements EventService {
     private final EventMapper eventMapper;
     private final StatClient statClient;
     private final ModerationCommentService moderationCommentService;
+    private static final String EVENT_NOT_FOUND = "Событие с ID %s не найдено";
 
     @Value("${event.moderation.page-size:10}")
     private int defaultModerationPageSize;
@@ -150,7 +148,7 @@ public class EventServiceImpl implements EventService {
     public EventFullDto getEventByUser(EventByUserRequest request) {
         Long userId = request.getUserId();
         Long eventId = request.getEventId();
-        Event event = eventRepository.findByIdAndInitiatorId(eventId, userId).orElseThrow(() -> new NotFoundException("Событие с id=" + eventId + " не найдено"));
+        Event event = eventRepository.findByIdAndInitiatorId(eventId, userId).orElseThrow(() -> new NotFoundException(String.format(EVENT_NOT_FOUND, eventId)));
         Long views = getEventViews(event);
         Long eventRequests = getEventRequests(event);
         return eventMapper.toEventFullDto(event, eventRequests, views);
@@ -160,7 +158,7 @@ public class EventServiceImpl implements EventService {
     public EventFullDto updateEventByUser(EventByUserRequest request, UpdateEventUserRequest updateEvent) {
         Long userId = request.getUserId();
         Long eventId = request.getEventId();
-        Event event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException("Событие с id=" + eventId + " не найдено"));
+        Event event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException(String.format(EVENT_NOT_FOUND, eventId)));
 
         if (!event.getInitiatorId().equals(userId)) {
             throw new NotFoundException("Событие с id=" + eventId + " не принадлежит пользователю");
@@ -211,7 +209,7 @@ public class EventServiceImpl implements EventService {
     @Override
     @Transactional
     public EventFullDto updateEventByAdmin(Long eventId, UpdateEventAdminRequest updateEvent) {
-        Event event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException("Событие с id=" + eventId + " не найдено"));
+        Event event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException(String.format(EVENT_NOT_FOUND, eventId)));
 
         if (updateEvent.getEventDate() != null) {
             LocalDateTime now = LocalDateTime.now();
@@ -387,7 +385,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventFullDto getEventPublic(Long eventId, HttpServletRequest request) {
-        Event event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException("Событие с id=" + eventId + " не найдено"));
+        Event event = eventRepository.findById(eventId).orElseThrow(() -> new NotFoundException(String.format(EVENT_NOT_FOUND, eventId)));
 
         if (event.getState() != EventState.PUBLISHED) {
             throw new NotFoundException("Событие с id=" + eventId + " не опубликовано");
@@ -414,7 +412,7 @@ public class EventServiceImpl implements EventService {
         log.info("Обновление события с id: {} администратором с комментарием", eventId);
 
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new NotFoundException("Событие с id=" + eventId + " не найдено"));
+                .orElseThrow(() -> new NotFoundException(String.format(EVENT_NOT_FOUND, eventId)));
 
         UpdateEventAdminRequest updateEvent = updateRequest.getUpdateEvent();
         String moderationComment = updateRequest.getModerationComment();
@@ -528,5 +526,6 @@ public class EventServiceImpl implements EventService {
                         Collectors.toList()
                 ));
     }
+
 
 }

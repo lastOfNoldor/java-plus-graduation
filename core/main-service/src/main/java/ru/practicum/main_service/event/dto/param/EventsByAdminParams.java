@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.practicum.main_service.event.model.EventState;
+import ru.practicum.interaction_api.enums.EventState;
 
 import java.time.LocalDateTime;
 import java.util.List;

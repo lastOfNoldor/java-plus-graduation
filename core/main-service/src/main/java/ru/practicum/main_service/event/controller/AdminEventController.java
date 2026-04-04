@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.practicum.main_service.event.dto.EventFullDto;
 import ru.practicum.main_service.event.dto.param.EventsByAdminParams;
 import ru.practicum.main_service.event.dto.param.UpdateEventAdminRequest;
-import ru.practicum.main_service.event.model.EventState;
+import ru.practicum.interaction_api.enums.EventState;
 import ru.practicum.main_service.event.service.EventService;
 
 import java.time.LocalDateTime;

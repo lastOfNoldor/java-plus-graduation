@@ -2,7 +2,7 @@ package ru.practicum.main_service.event.repository;
 
 import org.springframework.data.domain.Pageable;
 import ru.practicum.main_service.event.model.Event;
-import ru.practicum.main_service.event.model.EventState;
+import ru.practicum.interaction_api.enums.EventState;
 
 import java.time.LocalDateTime;
 import java.util.List;

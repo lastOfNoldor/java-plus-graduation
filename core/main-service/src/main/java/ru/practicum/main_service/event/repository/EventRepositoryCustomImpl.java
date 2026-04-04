@@ -9,9 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import ru.practicum.main_service.event.model.Event;
-import ru.practicum.main_service.event.model.EventState;
-import ru.practicum.main_service.request.model.Request;
-import ru.practicum.main_service.request.model.RequestStatus;
+import ru.practicum.interaction_api.enums.EventState;
+import ru.practicum.requst_service.model.Request;
+import ru.practicum.interaction_api.enums.RequestStatus;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

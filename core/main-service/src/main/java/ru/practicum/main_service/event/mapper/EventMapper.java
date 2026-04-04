@@ -10,7 +10,7 @@ import ru.practicum.main_service.event.dto.EventShortDto;
 import ru.practicum.main_service.event.dto.NewEventDto;
 import ru.practicum.main_service.event.dto.param.UpdateEventRequest;
 import ru.practicum.main_service.event.model.Event;
-import ru.practicum.main_service.event.model.EventState;
+import ru.practicum.interaction_api.enums.EventState;
 import ru.practicum.user_service.mapper.UserMapper;
 
 import java.time.LocalDateTime;

@@ -2,6 +2,7 @@ package ru.practicum.main_service.event.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import ru.practicum.interaction_api.enums.EventState;
 import ru.practicum.main_service.category.model.Category;
 
 import java.time.LocalDateTime;
