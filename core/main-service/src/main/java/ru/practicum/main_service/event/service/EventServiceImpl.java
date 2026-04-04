@@ -32,6 +32,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
+
+//TODO маппер пофиксить с usersortsdto в Eventfulldto где то вызывать user service и возращать имя.айди в дтошке usershortdto
+
 @Slf4j
 @Service
 @RequiredArgsConstructor

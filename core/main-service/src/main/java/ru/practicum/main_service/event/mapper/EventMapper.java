@@ -11,12 +11,13 @@ import ru.practicum.main_service.event.dto.NewEventDto;
 import ru.practicum.main_service.event.dto.param.UpdateEventRequest;
 import ru.practicum.main_service.event.model.Event;
 import ru.practicum.interaction_api.enums.EventState;
-import ru.practicum.user_service.mapper.UserMapper;
 
 import java.time.LocalDateTime;
 
+
+
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
-        uses = {CategoryMapper.class, UserMapper.class}, imports = {LocalDateTime.class, EventState.class})
+        uses = {CategoryMapper.class}, imports = {LocalDateTime.class, EventState.class})
 public abstract class EventMapper {
 
     @Autowired

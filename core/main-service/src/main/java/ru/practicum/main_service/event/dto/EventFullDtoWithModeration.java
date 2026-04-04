@@ -1,10 +1,10 @@
 package ru.practicum.main_service.event.dto;
 
 import lombok.*;
+import ru.practicum.interaction_api.dto.user.UserShortDto;
 import ru.practicum.main_service.category.dto.CategoryDto;
 import ru.practicum.interaction_api.enums.EventState;
 import ru.practicum.main_service.event.model.Location;
-import ru.practicum.user_service.dto.UserShortDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
