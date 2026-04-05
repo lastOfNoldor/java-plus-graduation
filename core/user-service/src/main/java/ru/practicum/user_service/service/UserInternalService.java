@@ -6,14 +6,12 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.interaction_api.dto.user.UserShortDto;
 import ru.practicum.interaction_api.exception.NotFoundException;
 import ru.practicum.user_service.mapper.UserMapper;
-import ru.practicum.user_service.model.User;
 import ru.practicum.user_service.repository.UserRepository;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

@@ -10,8 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import ru.practicum.event_service.event.model.Event;
 import ru.practicum.interaction_api.enums.EventState;
-import ru.practicum.request_service.model.Request;
 import ru.practicum.interaction_api.enums.RequestStatus;
+import ru.practicum.request_service.model.Request;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

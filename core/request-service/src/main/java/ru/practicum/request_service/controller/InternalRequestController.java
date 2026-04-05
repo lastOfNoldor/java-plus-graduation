@@ -6,7 +6,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.practicum.interaction_api.contract.request_service.RequestOperations;
-import ru.practicum.interaction_api.enums.RequestStatus;
 import ru.practicum.request_service.service.InternalRequestService;
 
 import java.util.List;

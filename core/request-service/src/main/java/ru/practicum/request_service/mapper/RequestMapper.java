@@ -1,10 +1,9 @@
 package ru.practicum.request_service.mapper;
 
 import org.springframework.stereotype.Component;
-import ru.practicum.main_service.event.model.Event;
+import ru.practicum.interaction_api.enums.RequestStatus;
 import ru.practicum.request_service.dto.ParticipationRequestDto;
 import ru.practicum.request_service.model.Request;
-import ru.practicum.interaction_api.enums.RequestStatus;
 
 @Component
 public class RequestMapper {

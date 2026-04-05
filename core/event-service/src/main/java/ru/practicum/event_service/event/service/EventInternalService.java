@@ -4,14 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.interaction_api.dto.event.EventInternalDto;
-import ru.practicum.interaction_api.exception.NotFoundException;
-import ru.practicum.main_service.category.service.CategoryService;
-import ru.practicum.event_service.event.mapper.EventMapper;
 import ru.practicum.event_service.event.model.Event;
 import ru.practicum.event_service.event.repository.EventRepository;
-import ru.practicum.request_service.repository.RequestRepository;
-import ru.practicum.stats_client.StatClient;
+import ru.practicum.interaction_api.dto.event.EventInternalDto;
+import ru.practicum.interaction_api.exception.NotFoundException;
+
 
 @Slf4j
 @Service
@@ -20,11 +17,6 @@ import ru.practicum.stats_client.StatClient;
 public class EventInternalService {
 
     private final EventRepository eventRepository;
-    private final RequestRepository requestRepository;
-    private final CategoryService categoryService;
-    private final EventMapper eventMapper;
-    private final StatClient statClient;
-    private final ModerationCommentService moderationCommentService;
     private static final String EVENT_NOT_FOUND = "Событие с ID %s не найдено";
 
 

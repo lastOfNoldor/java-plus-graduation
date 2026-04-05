@@ -2,9 +2,9 @@ package ru.practicum.category_service.mapper;
 
 import org.mapstruct.Named;
 import org.springframework.stereotype.Component;
-import ru.practicum.interaction_api.dto.category.CategoryDto;
 import ru.practicum.category_service.dto.NewCategoryDto;
 import ru.practicum.category_service.model.Category;
+import ru.practicum.interaction_api.dto.category.CategoryDto;
 
 @Component
 public class CategoryMapper {

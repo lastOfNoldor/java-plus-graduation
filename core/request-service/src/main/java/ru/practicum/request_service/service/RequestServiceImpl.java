@@ -4,9 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.interaction_api.dto.event.EventInternalDto;
-import ru.practicum.main_service.event.model.Event;
 import ru.practicum.interaction_api.enums.EventState;
-import ru.practicum.main_service.event.repository.EventRepository;
+import ru.practicum.interaction_api.enums.RequestStatus;
 import ru.practicum.interaction_api.exception.ConflictException;
 import ru.practicum.interaction_api.exception.NotFoundException;
 import ru.practicum.request_service.dto.EventRequestStatusUpdateResult;
@@ -16,7 +15,6 @@ import ru.practicum.request_service.dto.param.RequestParamDto;
 import ru.practicum.request_service.dto.param.UpdateRequestStatusParamDto;
 import ru.practicum.request_service.mapper.RequestMapper;
 import ru.practicum.request_service.model.Request;
-import ru.practicum.interaction_api.enums.RequestStatus;
 
 import java.util.ArrayList;
 import java.util.List;

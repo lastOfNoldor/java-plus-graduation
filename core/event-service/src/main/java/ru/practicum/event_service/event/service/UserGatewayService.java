@@ -4,7 +4,6 @@ import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
 import ru.practicum.interaction_api.contract.user_service.UserClient;
 import ru.practicum.interaction_api.dto.user.UserShortDto;
 

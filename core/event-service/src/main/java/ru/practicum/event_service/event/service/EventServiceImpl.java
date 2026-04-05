@@ -1,6 +1,5 @@
 package ru.practicum.event_service.event.service;
 
-import feign.Retryer;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,22 +8,17 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.event_service.event.dto.*;
 import ru.practicum.event_service.event.dto.param.*;
-
-import ru.practicum.interaction_api.dto.user.UserShortDto;
-import ru.practicum.interaction_api.dto.category.CategoryDto;
 import ru.practicum.event_service.event.mapper.EventMapper;
 import ru.practicum.event_service.event.model.Event;
+import ru.practicum.interaction_api.dto.category.CategoryDto;
+import ru.practicum.interaction_api.dto.user.UserShortDto;
 import ru.practicum.interaction_api.enums.EventState;
 import ru.practicum.interaction_api.enums.StateAction;
-import ru.practicum.event_service.event.repository.EventRepository;
 import ru.practicum.interaction_api.exception.ConflictException;
 import ru.practicum.interaction_api.exception.NotFoundException;
 import ru.practicum.interaction_api.exception.ValidationException;
-import ru.practicum.interaction_api.enums.RequestStatus;
-import ru.practicum.request_service.repository.RequestRepository;
 import ru.practicum.stats_client.StatClient;
 import ru.practicum.stats_dto.EndpointHitDto;
 import ru.practicum.stats_dto.ViewStatsDto;

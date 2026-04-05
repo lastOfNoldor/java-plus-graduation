@@ -5,12 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.practicum.interaction_api.contract.request_service.RequestClient;
-import ru.practicum.interaction_api.enums.RequestStatus;
-
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @Slf4j
 @RequiredArgsConstructor

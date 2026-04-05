@@ -1,13 +1,13 @@
 package ru.practicum.event_service.event.mapper;
 
 import org.mapstruct.*;
-import ru.practicum.interaction_api.dto.category.CategoryDto;
-import ru.practicum.interaction_api.dto.user.UserShortDto;
 import ru.practicum.event_service.event.dto.EventFullDto;
 import ru.practicum.event_service.event.dto.EventShortDto;
 import ru.practicum.event_service.event.dto.NewEventDto;
 import ru.practicum.event_service.event.dto.param.UpdateEventRequest;
 import ru.practicum.event_service.event.model.Event;
+import ru.practicum.interaction_api.dto.category.CategoryDto;
+import ru.practicum.interaction_api.dto.user.UserShortDto;
 import ru.practicum.interaction_api.enums.EventState;
 
 import java.time.LocalDateTime;

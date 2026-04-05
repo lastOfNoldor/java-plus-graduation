@@ -7,9 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.interaction_api.dto.category.CategoryDto;
 import ru.practicum.category_service.dto.NewCategoryDto;
 import ru.practicum.category_service.service.CategoryService;
+import ru.practicum.interaction_api.dto.category.CategoryDto;
 
 @Slf4j
 @RestController
