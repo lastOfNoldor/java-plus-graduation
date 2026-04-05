@@ -4,7 +4,7 @@ spring:
       discovery.locator.enabled: true
       routes:
         - id: admin-categories
-          uri: lb://main-service
+          uri: lb://category-service
           predicates:
             - Path=/admin/categories/**,/admin/categories
 
@@ -14,7 +14,7 @@ spring:
             - Path=/admin/users/**
 
         - id: admin-compilations
-          uri: lb://main-service
+          uri: lb://event-service
           predicates:
             - Path=/admin/compilations/**
 
@@ -24,27 +24,27 @@ spring:
             - Path=/admin/events/**
 
         - id: admin-moderation
-          uri: lb://main-service
+          uri: lb://event-service
           predicates:
             - Path=/admin/events/moderation,/admin/events/{eventId}/moderate
 
         - id: public-categories
-          uri: lb://main-service
+          uri: lb://categories-service
           predicates:
             - Path=/categories/**,/categories
 
         - id: public-compilations
-          uri: lb://main-service
+          uri: lb://event-service
           predicates:
             - Path=/compilations/**,/compilations
 
         - id: public-events
-          uri: lb://main-service
+          uri: lb://event-service
           predicates:
             - Path=/events/**,/events
 
         - id: user-events
-          uri: lb://main-service
+          uri: lb://event-service
           predicates:
             - Path=/users/{userId}/events/**
 
@@ -54,7 +54,7 @@ spring:
             - Path=/users/{userId}/requests/**,/users/{userId}/requests
 
         - id: user-moderation-comments
-          uri: lb://main-service
+          uri: lb://event-service
           predicates:
             - Path=/users/{userId}/events/{eventId}/moderation-comments
 
