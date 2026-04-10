@@ -61,7 +61,7 @@ public class EventServiceImpl implements EventService {
             log.trace("Пользователь userId={} не имеет событий", userId);
             return Collections.emptyList();
         }
-        Map<Long, Long> confirmedRequestsMap = getConfirmedRequestsBatch(events);
+        Map<Long, Long> confirmedRequestsMap = getConfirmedRequestsAndItsCountBatch(events);
         Map<Long, Long> viewsMap = getEventsViewsBatch(events);
         log.trace("Статистика собрана: confirmedRequests={} записей, views={} записей", confirmedRequestsMap.size(), viewsMap.size());
         UserShortDto userData = getUserData(userId);
@@ -77,12 +77,16 @@ public class EventServiceImpl implements EventService {
         return result;
     }
 
-    private Map<Long, Long> getConfirmedRequestsBatch(List<Event> events) {
+    private Map<Long, Long> getConfirmedRequestsAndItsCountBatch(List<Event> events) {
         log.trace("Получение подтвержденных запросов для {} событий", events.size());
         List<Long> eventIds = events.stream().map(Event::getId).collect(Collectors.toList());
         List<Object[]> results = requestGatewayService.countConfirmedRequestsByEventIds(eventIds);
         log.trace("Получено {} результатов о подтвержденных запросах", results.size());
-        return results.stream().collect(Collectors.toMap(result -> (Long) result[0], result -> (Long) result[1]));
+        return results.stream()
+                .collect(Collectors.toMap(
+                        r -> ((Number) r[0]).longValue(),
+                        r -> ((Number) r[1]).longValue()
+                ));
     }
 
     private Map<Long, Long> getEventsViewsBatch(List<Event> events) {
@@ -295,7 +299,7 @@ public class EventServiceImpl implements EventService {
             log.trace("События не найдены по указанным критериям");
             return Collections.emptyList();
         }
-        Map<Long, Long> confirmedRequestsMap = getConfirmedRequestsBatch(events);
+        Map<Long, Long> confirmedRequestsMap = getConfirmedRequestsAndItsCountBatch(events);
         Map<Long, Long> viewsMap = getEventsViewsBatch(events);
         Map<Long, UserShortDto> usersDto = getUserData(events);
         Map<Long, CategoryDto> categoriesDto = getCategoryData(events);
@@ -343,7 +347,8 @@ public class EventServiceImpl implements EventService {
         log.trace("Поиск с пагинацией: offset={}, limit={}, onlyAvailable={}", pageable.getOffset(),
                 pageable.getPageSize(), onlyAvailable);
         List<Event> events = transactionalService.findEventsPublic(text, categories, paid, rangeStart,
-                rangeEnd, onlyAvailable, pageable);
+                rangeEnd, pageable);
+        events = filterByOnlyAvailable(events, onlyAvailable);
         log.trace("Найдено {} событий (сортировка по дате)", events.size());
         return findSortedEventsPublicRequest(events);
     }
@@ -353,9 +358,9 @@ public class EventServiceImpl implements EventService {
                                                   Boolean onlyAvailable) {
         log.trace("Поиск без пагинации для сортировки по просмотрам, onlyAvailable={}", onlyAvailable);
         List<Event> events = transactionalService.findEventsPublic(text, categories, paid, rangeStart,
-                rangeEnd, onlyAvailable, null);
+                rangeEnd,  null);
         log.trace("Найдено {} событий для сортировки по просмотрам", events.size());
-
+        events = filterByOnlyAvailable(events, onlyAvailable);
         List<EventShortDto> result = findSortedEventsPublicRequest(events);
         if (result.size() > 100) {
             log.debug("Сортировка в памяти для {} событий (может быть затратно)", result.size());
@@ -372,6 +377,17 @@ public class EventServiceImpl implements EventService {
         return paginatedResult;
     }
 
+    private List<Event> filterByOnlyAvailable(List<Event> events, Boolean onlyAvailable) {
+        if (Boolean.TRUE.equals(onlyAvailable)) {
+            Map<Long, Long> confirmedCounts = getConfirmedRequestsAndItsCountBatch(events);
+            events = events.stream()
+                    .filter(e -> e.getParticipantLimit() == 0
+                            || confirmedCounts.getOrDefault(e.getId(), 0L) < e.getParticipantLimit())
+                    .toList();
+        }
+        return events;
+    }
+
     private List<EventShortDto> findSortedEventsPublicRequest(List<Event> events) {
         if (events.isEmpty()) {
             return Collections.emptyList();
@@ -379,7 +395,7 @@ public class EventServiceImpl implements EventService {
         if (events.size() > 20) {
             log.trace("Запрос статистики для {} событий (batch)", events.size());
         }
-        Map<Long, Long> confirmedRequestsMap = getConfirmedRequestsBatch(events);
+        Map<Long, Long> confirmedRequestsMap = getConfirmedRequestsAndItsCountBatch(events);
         Map<Long, Long> viewsMap = getEventsViewsBatch(events);
         Map<Long, UserShortDto> userDtos = getUserData(events);
         Map<Long, CategoryDto> categoryDtos = getCategoryData(events);
@@ -423,8 +439,8 @@ public class EventServiceImpl implements EventService {
         }
         Long eventRequests = getEventRequests(event);
         Long views = getEventViews(event);
-        UserShortDto userData = getUserData(eventId);
-        CategoryDto categoryData = getCategoryData(eventId);
+        UserShortDto userData = getUserData(event.getInitiatorId());
+        CategoryDto categoryData = getCategoryData(event.getCategoryId());
         EventFullDto result = eventMapper.toEventFullDto(event, eventRequests, views, userData, categoryData);
         sendStats(request);
 
@@ -527,7 +543,7 @@ public class EventServiceImpl implements EventService {
                 .map(Event::getId)
                 .collect(Collectors.toList());
 
-        Map<Long, Long> confirmedRequestsMap = getConfirmedRequestsBatch(events);
+        Map<Long, Long> confirmedRequestsMap = getConfirmedRequestsAndItsCountBatch(events);
         Map<Long, Long> viewsMap = getEventsViewsBatch(events);
         Map<Long, UserShortDto> users = getUserData(events);
         Map<Long, CategoryDto> categories = getCategoryData(events);

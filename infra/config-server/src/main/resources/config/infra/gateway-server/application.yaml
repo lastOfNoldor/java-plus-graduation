@@ -3,6 +3,21 @@ spring:
     gateway:
       discovery.locator.enabled: true
       routes:
+        - id: user-event-requests-patch
+          uri: lb://request-service
+          predicates:
+            - Path=/users/{userId}/events/{eventId}/requests
+
+        - id: user-event-requests-sub
+          uri: lb://request-service
+          predicates:
+            - Path=/users/{userId}/events/{eventId}/requests/**
+
+        - id: user-requests
+          uri: lb://request-service
+          predicates:
+            - Path=/users/{userId}/requests,/users/{userId}/requests/**
+
         - id: admin-categories
           uri: lb://category-service
           predicates:
@@ -11,25 +26,25 @@ spring:
         - id: admin-users
           uri: lb://user-service
           predicates:
-            - Path=/admin/users/**
+            - Path=/admin/users/**,/admin/users
 
         - id: admin-compilations
           uri: lb://event-service
           predicates:
             - Path=/admin/compilations/**
 
-        - id: admin-events
-          uri: lb://main-service
-          predicates:
-            - Path=/admin/events/**
-
         - id: admin-moderation
           uri: lb://event-service
           predicates:
             - Path=/admin/events/moderation,/admin/events/{eventId}/moderate
 
+        - id: admin-events
+          uri: lb://event-service
+          predicates:
+            - Path=/admin/events/**,/admin/events
+
         - id: public-categories
-          uri: lb://categories-service
+          uri: lb://category-service
           predicates:
             - Path=/categories/**,/categories
 
@@ -46,12 +61,8 @@ spring:
         - id: user-events
           uri: lb://event-service
           predicates:
-            - Path=/users/{userId}/events/**
+            - Path=/users/{userId}/events,/users/{userId}/events/{eventId}
 
-        - id: user-requests
-          uri: lb://request-service
-          predicates:
-            - Path=/users/{userId}/requests/**,/users/{userId}/requests
 
         - id: user-moderation-comments
           uri: lb://event-service

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import ru.practicum.interaction_api.contract.category_service.CategoryClient;
 import ru.practicum.interaction_api.dto.category.CategoryDto;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,7 +21,7 @@ public class CategoryGatewayService {
         return categoryClient.findById(categoryId);
     }
 
-    private CategoryDto fallbackFindById(List<Long> categoryIds) {
+    private CategoryDto fallbackFindById(Long categoryId, Throwable t) {
         throw new RuntimeException("Category service is temporarily unavailable. Please try again later.");
     }
 
@@ -32,7 +31,7 @@ public class CategoryGatewayService {
         return categoryClient.findAllById(categoryIds);
     }
 
-    private Map<Long, CategoryDto> fallbackFindAllById(List<Long> categoryIds) {
+    private Map<Long, CategoryDto> fallbackFindAllById(Set<Long> categoryIds, Throwable t) {
         throw new RuntimeException("Category service is temporarily unavailable. Please try again later.");
     }
 

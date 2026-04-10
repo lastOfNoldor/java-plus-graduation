@@ -18,7 +18,7 @@ public class EventGatewayService {
         return eventClient.findById(eventId);
     }
 
-    private EventInternalDto fallbackFindById(Long eventId) {
+    private EventInternalDto fallbackFindById(Long eventId,Throwable t) {
         throw new RuntimeException("Event service is temporarily unavailable. Please try again later.");
     }
 
@@ -27,7 +27,7 @@ public class EventGatewayService {
         return eventClient.existsByIdAndInitiatorId(eventId, initiatorId);
     }
 
-    private boolean fallbackExistsByIdAndInitiatorId(Long eventId,Long initiatorId) {
+    private boolean fallbackExistsByIdAndInitiatorId(Long eventId,Long initiatorId, Throwable t) {
         return false;
     }
 
@@ -36,7 +36,7 @@ public class EventGatewayService {
         return eventClient.findByIdAndInitiatorId(eventId, initiatorId);
     }
 
-    private EventInternalDto fallbackFindByIdAndInitiatorId(Long eventId,Long initiatorId) {
+    private EventInternalDto fallbackFindByIdAndInitiatorId(Long eventId,Long initiatorId, Throwable t) {
         throw new RuntimeException("Event service is temporarily unavailable. Please try again later.");
     }
 

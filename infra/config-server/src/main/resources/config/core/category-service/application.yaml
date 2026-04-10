@@ -2,7 +2,7 @@ server:
   port: 0
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/core_event_service
+    url: jdbc:postgresql://localhost:5432/core_category_service
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
@@ -46,8 +46,4 @@ resilience4j:
         failureRateThreshold: 50
         slowCallRateThreshold: 100
         slowCallDurationThreshold: 4s
-
-discovery:
-  services:
-    stats-server-id: stats-server
 

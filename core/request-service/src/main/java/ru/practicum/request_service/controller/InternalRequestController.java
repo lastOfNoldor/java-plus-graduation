@@ -24,8 +24,9 @@ public class InternalRequestController implements RequestOperations {
         return internalRequestService.countConfirmedRequestsByEventIds(eventIds);
     }
 
+
     @Override
-    public Long countConfirmedRequestsByEventIds(Long eventId) {
+    public Long countConfirmedRequestsByEventId(Long eventId) {
         return internalRequestService.countConfirmedRequestsByEventId(eventId);
 
     }

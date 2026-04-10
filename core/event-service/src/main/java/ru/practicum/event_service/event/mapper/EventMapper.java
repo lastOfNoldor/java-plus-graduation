@@ -27,9 +27,10 @@ public abstract class EventMapper {
     @Mapping(target = "paid", source = "paid")
     @Mapping(target = "participantLimit", source = "participantLimit")
     @Mapping(target = "requestModeration", source = "requestModeration")
-    @Mapping(target = "categoryId", source = "categoryId")
+    @Mapping(target = "categoryId", source = "category")
     public abstract void updateEventFromRequest(UpdateEventRequest request, @MappingTarget Event event);
 
+    @Mapping(target = "id", source = "event.id")
     @Mapping(target = "confirmedRequests", ignore = true)
     @Mapping(target = "views", ignore = true)
     @Mapping(target = "initiator", source = "initiator")
@@ -47,7 +48,7 @@ public abstract class EventMapper {
         return dto;
     }
 
-
+    @Mapping(target = "id", source = "event.id")
     @Mapping(target = "confirmedRequests", ignore = true)
     @Mapping(target = "views", ignore = true)
     @Mapping(target = "initiator", source = "initiator")

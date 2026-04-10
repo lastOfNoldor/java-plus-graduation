@@ -15,4 +15,6 @@ public interface EventOperations {
     @GetMapping("/findByIdAndInitiatorId")
     EventInternalDto findByIdAndInitiatorId(@RequestParam Long eventId, @RequestParam Long initiatorId);
 
+    @GetMapping("/existsByCategoryId")
+    boolean existsByCategoryId(@RequestParam Long catId);
 }

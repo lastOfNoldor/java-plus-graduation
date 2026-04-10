@@ -11,5 +11,7 @@ public interface RequestOperations {
     List<Object[]> countConfirmedRequestsByEventIds(@RequestParam List<Long> eventIds);
 
     @GetMapping("/countConfirmedByEventId")
-    Long countConfirmedRequestsByEventIds(@RequestParam Long eventId);
+    Long countConfirmedRequestsByEventId(@RequestParam Long eventId);
+
+
 }

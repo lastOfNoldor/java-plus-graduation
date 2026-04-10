@@ -21,7 +21,7 @@ spring:
 
 logging:
   level:
-    ru.yandex.practicum: DEBUG
+    ru.practicum: trace
     org.springframework.web: INFO
     org.hibernate: INFO
 

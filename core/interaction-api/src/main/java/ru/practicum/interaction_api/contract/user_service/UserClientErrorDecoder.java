@@ -1,4 +1,6 @@
 package ru.practicum.interaction_api.contract.user_service;
 
-public class UserClientErrorDecoder {
+import ru.practicum.interaction_api.contract.BaseErrorDecoder;
+
+public class UserClientErrorDecoder  extends BaseErrorDecoder {
 }

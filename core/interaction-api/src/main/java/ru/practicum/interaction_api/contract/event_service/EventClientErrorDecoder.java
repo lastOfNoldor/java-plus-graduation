@@ -1,4 +1,6 @@
 package ru.practicum.interaction_api.contract.event_service;
 
-public class EventClientErrorDecoder {
+import ru.practicum.interaction_api.contract.BaseErrorDecoder;
+
+public class EventClientErrorDecoder  extends BaseErrorDecoder {
 }

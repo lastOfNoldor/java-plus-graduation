@@ -45,4 +45,8 @@ public class EventInternalService {
                 .requestModeration(event.getRequestModeration())
                 .state(event.getState()).build();
     }
+
+    public boolean existsByCategoryId(Long catId) {
+       return eventRepository.existsByCategoryId(catId);
+    }
 }

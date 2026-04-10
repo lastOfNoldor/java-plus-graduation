@@ -56,9 +56,8 @@ public class TransactionalEventService {
                                  Boolean paid,
                                  LocalDateTime rangeStart,
                                  LocalDateTime rangeEnd,
-                                 Boolean onlyAvailable,
                                  Pageable pageable) {
-        return eventRepository.findEventsPublic(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, pageable);
+        return eventRepository.findEventsPublic(text, categories, paid, rangeStart, rangeEnd, pageable);
     }
 
     public List<Event> findByState(EventState eventState, Pageable pageable){

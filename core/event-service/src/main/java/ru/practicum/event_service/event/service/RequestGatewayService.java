@@ -14,23 +14,25 @@ import java.util.List;
 public class RequestGatewayService {
     private final RequestClient requestClient;
 
+
     @CircuitBreaker(name = "request-service", fallbackMethod = "fallbackCountConfirmedRequestsByEventIds")
     public List<Object[]> countConfirmedRequestsByEventIds(List<Long> eventIds) {
         return requestClient.countConfirmedRequestsByEventIds(eventIds);
     }
 
 
-    private List<Object[]> fallbackCountConfirmedRequestsByEventIds(List<Long> eventIds) {
-        throw new RuntimeException("User service is temporarily unavailable. Please try again later.");
+    private List<Object[]> fallbackCountConfirmedRequestsByEventIds(List<Long> eventIds, Throwable t) {
+        throw new RuntimeException("Request service is temporarily unavailable. Please try again later.");
     }
 
     @CircuitBreaker(name = "request-service", fallbackMethod = "fallbackCountConfirmedRequestsByEventId")
     public Long countConfirmedRequestsByEventId(Long id) {
-        return requestClient.countConfirmedRequestsByEventIds(id);
+        return requestClient.countConfirmedRequestsByEventId(id);
     }
 
-    private Long fallbackCountConfirmedRequestsByEventId(Long id) {
-        throw new RuntimeException("User service is temporarily unavailable. Please try again later.");
+    private Long fallbackCountConfirmedRequestsByEventId(Long id, Throwable t) {
+        throw new RuntimeException("Request service is temporarily unavailable. Please try again later.");
     }
+
 }
 

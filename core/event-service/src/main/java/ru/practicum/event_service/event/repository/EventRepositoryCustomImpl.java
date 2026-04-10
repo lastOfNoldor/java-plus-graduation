@@ -10,8 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import ru.practicum.event_service.event.model.Event;
 import ru.practicum.interaction_api.enums.EventState;
-import ru.practicum.interaction_api.enums.RequestStatus;
-import ru.practicum.request_service.model.Request;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -32,13 +30,11 @@ public class EventRepositoryCustomImpl implements EventRepositoryCustom {
         CriteriaQuery<Event> cq = cb.createQuery(Event.class);
         Root<Event> event = cq.from(Event.class);
         log.trace("Применен fetch join для категории и инициатора");
-        event.fetch("category", JoinType.LEFT);
-        event.fetch("initiator", JoinType.LEFT);
 
         List<Predicate> predicates = new ArrayList<>();
 
         if (users != null && !users.isEmpty()) {
-            predicates.add(event.get("initiator").get("id").in(users));
+            predicates.add(event.get("initiatorId").in(users));
             log.trace("Добавлен фильтр по пользователям: {}", users);
         }
 
@@ -48,7 +44,7 @@ public class EventRepositoryCustomImpl implements EventRepositoryCustom {
         }
 
         if (categories != null && !categories.isEmpty()) {
-            predicates.add(event.get("category").get("id").in(categories));
+            predicates.add(event.get("categoryId").in(categories));
             log.trace("Добавлен фильтр по категориям: {}", categories);
         }
 
@@ -72,14 +68,12 @@ public class EventRepositoryCustomImpl implements EventRepositoryCustom {
     }
 
     @Override
-    public List<Event> findEventsPublic(String text, List<Long> categories, Boolean paid, LocalDateTime rangeStart, LocalDateTime rangeEnd, Boolean onlyAvailable, Pageable pageable) {
-        log.debug("Criteria API: публичный поиск. text={}, categories={}, paid={}, onlyAvailable={}", text, categories, paid, onlyAvailable);
+    public List<Event> findEventsPublic(String text, List<Long> categories, Boolean paid, LocalDateTime rangeStart, LocalDateTime rangeEnd, Pageable pageable) {
+        log.debug("Criteria API: публичный поиск. text={}, categories={}, paid={}", text, categories, paid);
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Event> cq = cb.createQuery(Event.class);
         Root<Event> event = cq.from(Event.class);
 
-        event.fetch("category", JoinType.LEFT);
-        event.fetch("initiator", JoinType.LEFT);
         log.trace("Применен fetch join для оптимизации запросов");
         List<Predicate> predicates = new ArrayList<>();
 
@@ -95,7 +89,7 @@ public class EventRepositoryCustomImpl implements EventRepositoryCustom {
         }
 
         if (categories != null && !categories.isEmpty()) {
-            predicates.add(event.get("category").get("id").in(categories));
+            predicates.add(event.get("categoryId").in(categories));
             log.trace("Добавлен фильтр по категориям : {}", categories);
         }
 
@@ -108,19 +102,6 @@ public class EventRepositoryCustomImpl implements EventRepositoryCustom {
         LocalDateTime endDate = rangeEnd != null ? rangeEnd : LocalDateTime.now().plusYears(100);
         predicates.add(cb.between(event.get("eventDate"), startDate, endDate));
         log.trace("Диапазон дат : с {} по {}", startDate, endDate);
-
-        if (Boolean.TRUE.equals(onlyAvailable)) {
-            log.trace("Добавлен сложный фильтр onlyAvailable с подзапросом");
-            Subquery<Long> subquery = cq.subquery(Long.class);
-            Root<Request> request = subquery.from(Request.class);
-            subquery.select(cb.count(request.get("id"))).where(cb.and(cb.equal(request.get("event").get("id"), event.get("id")), cb.equal(request.get("status"), RequestStatus.CONFIRMED)));
-
-            Predicate noLimit = cb.equal(event.get("participantLimit"), 0);
-            Predicate hasLimitAndAvailable = cb.and(cb.greaterThan(event.get("participantLimit"), 0), cb.lessThan(subquery, event.get("participantLimit")));
-
-            predicates.add(cb.or(noLimit, hasLimitAndAvailable));
-            log.trace("Условие onlyAvailable: participantLimit=0 OR confirmedRequests < participantLimit");
-        }
 
         cq.where(predicates.toArray(new Predicate[0]));
         log.trace("Всего предикатов: {}", predicates.size());

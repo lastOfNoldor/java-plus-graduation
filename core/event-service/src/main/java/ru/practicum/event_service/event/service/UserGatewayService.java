@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import ru.practicum.interaction_api.contract.user_service.UserClient;
 import ru.practicum.interaction_api.dto.user.UserShortDto;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,7 +21,7 @@ public class UserGatewayService {
         return userClient.findById(userId);
     }
 
-    private UserShortDto fallbackFindById(List<Long> userIds) {
+    private UserShortDto fallbackFindById(Long userId, Throwable t) {
         throw new RuntimeException("User service is temporarily unavailable. Please try again later.");
     }
 
@@ -32,7 +31,7 @@ public class UserGatewayService {
         return userClient.findAllById(userIds);
     }
 
-    private Map<Long, UserShortDto> fallbackFindAllById(List<Long> userIds) {
+    private Map<Long, UserShortDto> fallbackFindAllById(Set<Long> userIds, Throwable t) {
         throw new RuntimeException("User service is temporarily unavailable. Please try again later.");
     }
 

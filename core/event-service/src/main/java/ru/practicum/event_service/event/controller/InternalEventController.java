@@ -34,5 +34,10 @@ public class InternalEventController implements EventOperations {
         return eventService.findByIdAndInitiatorId(eventId, initiatorId);
     }
 
+    @Override
+    public boolean existsByCategoryId(Long catId) {
+        return eventService.existsByCategoryId(catId);
+    }
+
 
 }
