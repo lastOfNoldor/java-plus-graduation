@@ -357,8 +357,9 @@ public class EventServiceImpl implements EventService {
                                                   Boolean paid, LocalDateTime rangeStart, LocalDateTime rangeEnd,
                                                   Boolean onlyAvailable) {
         log.trace("Поиск без пагинации для сортировки по просмотрам, onlyAvailable={}", onlyAvailable);
+        Pageable pageable = PageRequest.of(0, 1000);
         List<Event> events = transactionalService.findEventsPublic(text, categories, paid, rangeStart,
-                rangeEnd,  null);
+                rangeEnd,  pageable);
         log.trace("Найдено {} событий для сортировки по просмотрам", events.size());
         events = filterByOnlyAvailable(events, onlyAvailable);
         List<EventShortDto> result = findSortedEventsPublicRequest(events);
@@ -516,8 +517,8 @@ public class EventServiceImpl implements EventService {
 
         Long views = getEventViews(updatedEvent);
         Long eventRequests = getEventRequests(updatedEvent);
-        UserShortDto userData = getUserData(eventId);
-        CategoryDto categoryData = getCategoryData(eventId);
+        UserShortDto userData = getUserData(updatedEvent.getInitiatorId());
+        CategoryDto categoryData = getCategoryData(updatedEvent.getCategoryId());
 
         EventFullDto eventFullDto = eventMapper.toEventFullDto(updatedEvent, eventRequests, views, userData, categoryData);
 
