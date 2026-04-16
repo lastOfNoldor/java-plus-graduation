@@ -17,6 +17,10 @@
             <artifactId>avro</artifactId>
             <version>1.11.3</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -27,13 +31,15 @@
                 <version>1.11.3</version>
                 <executions>
                     <execution>
+                        <id>schemas</id>
                         <phase>generate-sources</phase>
                         <goals>
-                            <goal>schema</goal>
+                            <goal>idl-protocol</goal>
                         </goals>
                         <configuration>
-                            <sourceDirectory>${project.basedir}/src/main/resources/avro</sourceDirectory>
-                            <outputDirectory>${project.basedir}/target/generated-sources/avro</outputDirectory>
+                            <sourceDirectory>${project.basedir}/src/main/avro/</sourceDirectory>
+                            <outputDirectory>${project.build.directory}/generated-sources</outputDirectory>
+                            <stringType>String</stringType>
                         </configuration>
                     </execution>
                 </executions>
