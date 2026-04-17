@@ -19,7 +19,7 @@ import ru.practicum.interaction_api.enums.StateAction;
 import ru.practicum.interaction_api.exception.ConflictException;
 import ru.practicum.interaction_api.exception.NotFoundException;
 import ru.practicum.interaction_api.exception.ValidationException;
-import ru.practicum.stats_client.StatClient;
+import ru.practicum.ewm.client.stats.StatClient;
 import ru.practicum.stats_dto.EndpointHitDto;
 import ru.practicum.stats_dto.ViewStatsDto;
 

@@ -1,4 +1,6 @@
+
 @namespace("ru.practicum.ewm.stats.avro")
+
 protocol UserActionsProtocol {
 	record UserActionAvro {
 		long userId;
@@ -8,8 +10,8 @@ protocol UserActionsProtocol {
 	}
 
 	enum ActionTypeAvro {
-		VIEW,
-		REGISTER,
-		LIKE
+		VIEW, // просмотр мероприятия
+		REGISTER, //регистрация на мероприятие
+		LIKE // лайк мероприятия
 	}
 }
