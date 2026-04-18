@@ -22,6 +22,7 @@
         <module>collector</module>
         <module>serialization</module>
         <module>analyzer</module>
+        <module>aggregator</module>
     </modules>
 
     <properties>
