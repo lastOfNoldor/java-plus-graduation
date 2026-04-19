@@ -10,8 +10,8 @@ protocol UserActionsProtocol {
 	}
 
 	enum ActionTypeAvro {
-		VIEW, // просмотр мероприятия
-		REGISTER, //регистрация на мероприятие
-		LIKE // лайк мероприятия
+		VIEW,
+		REGISTER,
+		LIKE
 	}
 }

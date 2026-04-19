@@ -5,9 +5,9 @@ package stats.message;
 option  java_package = "ru.practicum.ewm.stats.proto";
 option  java_multiple_files = true;
 
-// Запрос на получение рекомендуемых мероприятий дял пользователя
+
 message  SimilarEventsRequestProto {
-  int64 event_id = 1; // Идентификатор мероприятия, для которого нужно найти похожие
-  int64 user_id = 2; // Идентификатор пользователя, по которому нужно отфильтровать "просмотренные"
-  int32 max_results = 3; // Ограничение количества мероприятий в результате выполнения запроса
+  int64 event_id = 1;
+  int64 user_id = 2;
+  int32 max_results = 3;
 }

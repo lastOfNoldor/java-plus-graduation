@@ -5,7 +5,6 @@ package stats.message;
 option java_package = "ru.practicum.ewm.stats.proto";
 option java_multiple_files = true;
 
-//Запрос на получение рекомендуемых мероприятий для пользователя
 message  InteractionsCountRequestProto {
-  repeated  int64 event_id = 1; // индефикаторы мероприятий, для которых нудно вернуть количество взаимосвязей
+  repeated  int64 event_id = 1;
 }

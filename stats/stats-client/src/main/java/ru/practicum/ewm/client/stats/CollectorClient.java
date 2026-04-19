@@ -1,13 +1,11 @@
 package ru.practicum.ewm.client.stats;
 
 
-
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.stereotype.Component;
 import ru.practicum.ewm.stats.proto.ActionTypeProto;
 import ru.practicum.ewm.stats.proto.UserActionControllerGrpc;
 import ru.practicum.ewm.stats.proto.UserActionProto;
-
 
 import java.time.Instant;
 

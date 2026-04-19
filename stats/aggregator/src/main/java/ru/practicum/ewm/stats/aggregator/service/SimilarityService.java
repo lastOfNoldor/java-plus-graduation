@@ -18,13 +18,10 @@ public class SimilarityService {
 
     private final EventSimilarityProducer producer;
 
-    // Map<eventId, Map<userId, maxWeight>>
     private final Map<Long, Map<Long, Double>> eventUserWeights = new HashMap<>();
 
-    // Map<eventId, totalWeight>
     private final Map<Long, Double> eventTotalWeights = new HashMap<>();
 
-    // Map<minEventId, Map<maxEventId, sMin>>
     private final Map<Long, Map<Long, Double>> minWeightSums = new HashMap<>();
 
     private static final Map<ActionTypeAvro, Double> ACTION_WEIGHTS = Map.of(
@@ -74,7 +71,6 @@ public class SimilarityService {
 
             double similarity = newMin / (Math.sqrt(totalA) * Math.sqrt(totalB));
 
-            // упорядочиваем пару перед отправкой
             long first = Math.min(eventId, otherEventId);
             long second = Math.max(eventId, otherEventId);
 

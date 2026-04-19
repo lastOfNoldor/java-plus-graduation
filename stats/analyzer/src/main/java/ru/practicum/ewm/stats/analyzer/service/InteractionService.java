@@ -27,7 +27,6 @@ public class InteractionService {
         interactionRepository.findByUserIdAndEventId(action.getUserId(), action.getEventId())
                 .ifPresentOrElse(
                         existing -> {
-                            // рейтинг только растёт
                             if (newRating > existing.getRating()) {
                                 existing.setRating(newRating);
                                 existing.setTs(ts);

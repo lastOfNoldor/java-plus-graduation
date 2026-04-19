@@ -3,9 +3,6 @@ package ru.practicum.ewm.client.stats;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.stereotype.Component;
 import ru.practicum.ewm.stats.proto.*;
-import ru.practicum.ewm.stats.proto.RecommendationsControllerGrpc;
-
-
 
 import java.util.*;
 import java.util.stream.StreamSupport;
@@ -16,7 +13,6 @@ public class RecommendationsClient {
     @GrpcClient("analyzer")
     private RecommendationsControllerGrpc.RecommendationsControllerBlockingStub client;
 
-    // 🔹 1. Рекомендации для пользователя
     public List<RecommendedEventProto> getRecommendations(long userId, int maxResults) {
         UserRecommendationsRequestProto request = UserRecommendationsRequestProto.newBuilder()
                 .setUserId(userId)
@@ -28,7 +24,6 @@ public class RecommendationsClient {
         return toList(iterator);
     }
 
-    // 🔹 2. Похожие мероприятия
     public List<RecommendedEventProto> getSimilarEvents(long eventId, long userId, int maxResults) {
         SimilarEventsRequestProto request = SimilarEventsRequestProto.newBuilder()
                 .setEventId(eventId)
@@ -41,7 +36,6 @@ public class RecommendationsClient {
         return toList(iterator);
     }
 
-    // 🔹 3. Количество взаимодействий (rating)
     public Map<Long, Double> getInteractionsCount(List<Long> eventIds) {
         InteractionsCountRequestProto request = InteractionsCountRequestProto.newBuilder()
                 .addAllEventId(eventIds)
@@ -58,7 +52,6 @@ public class RecommendationsClient {
         return result;
     }
 
-    // 🔹 helper
     private List<RecommendedEventProto> toList(Iterator<RecommendedEventProto> iterator) {
         return StreamSupport.stream(
                 Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED),

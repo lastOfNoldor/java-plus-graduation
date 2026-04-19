@@ -17,11 +17,11 @@ import java.util.Properties;
 public class KafkaConfig {
 
     private Map<String, String> commonProperties;
-    private List<ConsumerConfig> consumers;
+    private List<KafkaConsumerProperties> consumers;
 
     @Getter
     @Setter
-    public static class ConsumerConfig {
+    public static class KafkaConsumerProperties {
         private String type;
         private Map<String, String> properties;
         private List<String> topics;
@@ -42,7 +42,7 @@ public class KafkaConfig {
         return consumers.stream()
                 .filter(c -> c.getType().equals(type))
                 .findFirst()
-                .map(ConsumerConfig::getTopics)
+                .map(KafkaConsumerProperties::getTopics)
                 .orElse(List.of());
     }
 
@@ -50,7 +50,7 @@ public class KafkaConfig {
         return consumers.stream()
                 .filter(c -> c.getType().equals(type))
                 .findFirst()
-                .map(ConsumerConfig::getPollTimeout)
+                .map(KafkaConsumerProperties::getPollTimeout)
                 .orElse(Duration.ofMillis(500));
     }
 }

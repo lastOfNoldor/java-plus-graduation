@@ -22,7 +22,6 @@ import ru.practicum.interaction_api.exception.ConflictException;
 import ru.practicum.interaction_api.exception.NotFoundException;
 import ru.practicum.interaction_api.exception.ValidationException;
 
-
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;

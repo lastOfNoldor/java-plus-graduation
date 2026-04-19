@@ -14,11 +14,9 @@ import java.util.Set;
 @Repository
 public interface SimilarityRepository extends JpaRepository<EventSimilarity, Long> {
 
-    // все похожие мероприятия для данного (event1 или event2)
     @Query("SELECT es FROM EventSimilarity es WHERE es.event1 = :eventId OR es.event2 = :eventId ORDER BY es.similarity DESC")
     List<EventSimilarity> findAllByEventId(@Param("eventId") Long eventId);
 
-    // K ближайших соседей среди просмотренных пользователем
     @Query("""
             SELECT es FROM EventSimilarity es
             WHERE (es.event1 = :eventId OR es.event2 = :eventId)

@@ -24,6 +24,6 @@ public class InternalRequestService {
     }
 
     public boolean hasConfirmedRequest(Long userId, Long eventId) {
-        return requestRepository.existsByRequesterIdAndEventIdAndStatus (userId,eventId, RequestStatus.CONFIRMED);
+        return requestRepository.existsByRequesterIdAndEventIdAndStatus(userId,eventId, RequestStatus.CONFIRMED);
     }
 }

@@ -18,14 +18,11 @@ public interface InteractionRepository extends JpaRepository<UserInteraction, Lo
 
     Optional<UserInteraction> findByUserIdAndEventId(Long userId, Long eventId);
 
-    // последние N мероприятий пользователя по дате
     List<UserInteraction> findTopNByUserIdOrderByTsDesc(Long userId, Pageable pageable);
 
-    // все мероприятия с которыми взаимодействовал пользователь
     @Query("SELECT ui.eventId FROM UserInteraction ui WHERE ui.userId = :userId")
     Set<Long> findEventIdsByUserId(@Param("userId") Long userId);
 
-    // сумма максимальных весов всех пользователей для мероприятия
     @Query("SELECT SUM(ui.rating) FROM UserInteraction ui WHERE ui.eventId = :eventId")
     Double sumRatingByEventId(@Param("eventId") Long eventId);
 

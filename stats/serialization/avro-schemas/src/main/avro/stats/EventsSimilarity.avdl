@@ -2,18 +2,12 @@
 protocol EventSimilarityProtocol {
 	import idl "Event.avdl";
 
-	/**
-	  * Эта запись отражает сходство между двуся мероприятиями.
-	  Она содержит упорядоченные идентификатоыр мероприятий,
-	  оценку сходства и метку времени.
 
-	  Значение поля eventA в лексикографическом порядке всегда должно идти перед значение поля eventB
- */
 
 	record EventSimilarityAvro {
 		long eventA;
 		long eventB;
-		double score; // Коэфицент похожести который мы рассчитает по алгоритму описанном в ТЗ, если он не указан скажи об этом
+		double score;
 		timestamp_ms timestamp;
 	}
 }
