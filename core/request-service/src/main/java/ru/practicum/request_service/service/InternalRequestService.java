@@ -22,4 +22,8 @@ public class InternalRequestService {
     public Long countConfirmedRequestsByEventId(Long eventId) {
         return requestRepository.countByEventIdAndStatus(eventId, RequestStatus.CONFIRMED);
     }
+
+    public boolean hasConfirmedRequest(Long userId, Long eventId) {
+        return requestRepository.existsByRequesterIdAndEventIdAndStatus (userId,eventId, RequestStatus.CONFIRMED);
+    }
 }

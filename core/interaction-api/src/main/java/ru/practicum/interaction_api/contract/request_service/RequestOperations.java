@@ -13,5 +13,9 @@ public interface RequestOperations {
     @GetMapping("/countConfirmedByEventId")
     Long countConfirmedRequestsByEventId(@RequestParam Long eventId);
 
+    @GetMapping("/hasConfirmedRequest")
+    boolean hasConfirmedRequest(@RequestParam Long userId,
+                             @RequestParam Long eventId);
+
 
 }

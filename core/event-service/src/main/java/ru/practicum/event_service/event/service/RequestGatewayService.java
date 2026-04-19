@@ -15,6 +15,13 @@ public class RequestGatewayService {
     private final RequestClient requestClient;
 
 
+    @CircuitBreaker(name = "request-service", fallbackMethod = "fallbackHasConfirmedRequest")
+    public boolean hasConfirmedRequest(Long userId, Long eventId) {
+        return requestClient.hasConfirmedRequest(userId, eventId);
+    }
+
+
+
     @CircuitBreaker(name = "request-service", fallbackMethod = "fallbackCountConfirmedRequestsByEventIds")
     public List<Object[]> countConfirmedRequestsByEventIds(List<Long> eventIds) {
         return requestClient.countConfirmedRequestsByEventIds(eventIds);

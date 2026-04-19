@@ -24,11 +24,18 @@ public interface EventService {
 
     List<EventShortDto> getEventsPublic(EventsPublicParams params);
 
-    EventFullDto getEventPublic(Long eventId, HttpServletRequest request);
+    EventFullDto getEventPublic(Long eventId, Long userId);
 
     EventFullDtoWithModeration updateEventByAdminWithComment(Long eventId,
                                                              UpdateEventAdminRequestWithComment updateRequest);
 
     List<EventFullDtoWithModeration> getEventsForModeration(Integer from, Integer size);
+
+    List<EventShortDto> getRecommendations(Long userId, int maxResults);
+
+    List<EventShortDto> getSimilarEvents(Long eventId, Long userId, int maxResults);
+
+    void likeEvent(Long userId, Long eventId);
+
 
 }

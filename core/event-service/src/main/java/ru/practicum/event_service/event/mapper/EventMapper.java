@@ -32,36 +32,38 @@ public abstract class EventMapper {
 
     @Mapping(target = "id", source = "event.id")
     @Mapping(target = "confirmedRequests", ignore = true)
-    @Mapping(target = "views", ignore = true)
+    @Mapping(target = "rating", ignore = true)
     @Mapping(target = "initiator", source = "initiator")
     @Mapping(target = "category", source = "category")
-    public abstract EventFullDto toEventFullDto(Event event,UserShortDto initiator, CategoryDto category);
+    public abstract EventFullDto toEventFullDto(Event event, UserShortDto initiator, CategoryDto category);
 
-    public EventFullDto toEventFullDto(Event event, Long confirmedRequests, Long views, UserShortDto initiator, CategoryDto category) {
-        EventFullDto dto = toEventFullDto(event,initiator,category);
+    public EventFullDto toEventFullDto(Event event, Long confirmedRequests, Double rating,
+                                       UserShortDto initiator, CategoryDto category) {
+        EventFullDto dto = toEventFullDto(event, initiator, category);
         if (confirmedRequests != null) {
             dto.setConfirmedRequests(confirmedRequests);
         }
-        if (views != null) {
-            dto.setViews(views);
+        if (rating != null) {
+            dto.setRating(rating);
         }
         return dto;
     }
 
     @Mapping(target = "id", source = "event.id")
     @Mapping(target = "confirmedRequests", ignore = true)
-    @Mapping(target = "views", ignore = true)
+    @Mapping(target = "rating", ignore = true)
     @Mapping(target = "initiator", source = "initiator")
     @Mapping(target = "category", source = "category")
-    public abstract EventShortDto toEventShortDto(Event event, UserShortDto initiator,  CategoryDto category);
+    public abstract EventShortDto toEventShortDto(Event event, UserShortDto initiator, CategoryDto category);
 
-    public EventShortDto toEventShortDto(Event event, Long confirmedRequests, Long views,  UserShortDto initiator,  CategoryDto category) {
-        EventShortDto dto = toEventShortDto(event,initiator,category);
+    public EventShortDto toEventShortDto(Event event, Long confirmedRequests, Double rating,
+                                         UserShortDto initiator, CategoryDto category) {
+        EventShortDto dto = toEventShortDto(event, initiator, category);
         if (confirmedRequests != null) {
             dto.setConfirmedRequests(confirmedRequests);
         }
-        if (views != null) {
-            dto.setViews(views);
+        if (rating != null) {
+            dto.setRating(rating);
         }
         return dto;
     }
