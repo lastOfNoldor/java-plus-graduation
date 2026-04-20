@@ -1,7 +1,6 @@
 package ru.practicum.ewm.stats.aggregator.producer;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -9,7 +8,7 @@ import ru.practicum.ewm.stats.avro.EventSimilarityAvro;
 
 import java.time.Instant;
 
-@Slf4j
+
 @Service
 @RequiredArgsConstructor
 public class EventSimilarityProducer {

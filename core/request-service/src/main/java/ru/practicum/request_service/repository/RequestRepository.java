@@ -10,7 +10,6 @@ import ru.practicum.request_service.model.Request;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public interface RequestRepository extends JpaRepository<Request, Long> {
 
     List<Request> findByRequesterId(Long userId);

@@ -22,14 +22,13 @@ public class RecommendationService {
     private final SimilarityRepository similarityRepository;
 
     public List<RecommendedEventProto> getInteractionsCount(List<Long> eventIds) {
+        Map<Long, Double> ratingsMap = interactionRepository.sumRatingsByEventIds(eventIds);
+
         return eventIds.stream()
-                .map(eventId -> {
-                    Double sum = interactionRepository.sumRatingByEventId(eventId);
-                    return RecommendedEventProto.newBuilder()
-                            .setEventId(eventId)
-                            .setScore(sum != null ? sum : 0.0)
-                            .build();
-                })
+                .map(eventId -> RecommendedEventProto.newBuilder()
+                        .setEventId(eventId)
+                        .setScore(ratingsMap.getOrDefault(eventId, 0.0))
+                        .build())
                 .toList();
     }
 
@@ -67,21 +66,17 @@ public class RecommendationService {
                 .map(UserInteraction::getEventId)
                 .collect(Collectors.toSet());
 
+        List<EventSimilarity> allSimilarities = similarityRepository.findAllByEventIds(viewedEventIds);
+
         Map<Long, Double> candidateScores = new HashMap<>();
 
-        for (UserInteraction interaction : recentInteractions) {
-            similarityRepository.findAllByEventId(interaction.getEventId())
-                    .stream()
-                    .filter(es -> {
-                        long other = es.getEvent1() == interaction.getEventId()
-                                ? es.getEvent2() : es.getEvent1();
-                        return !viewedEventIds.contains(other);
-                    })
-                    .forEach(es -> {
-                        long other = es.getEvent1() == interaction.getEventId()
-                                ? es.getEvent2() : es.getEvent1();
-                        candidateScores.merge(other, es.getSimilarity(), Double::sum);
-                    });
+        for (EventSimilarity es : allSimilarities) {
+            long viewed = viewedEventIds.contains(es.getEvent1()) ? es.getEvent1() : es.getEvent2();
+            long candidate = es.getEvent1() == viewed ? es.getEvent2() : es.getEvent1();
+
+            if (!viewedEventIds.contains(candidate)) {
+                candidateScores.merge(candidate, es.getSimilarity(), Double::sum);
+            }
         }
 
         if (candidateScores.isEmpty()) {
@@ -95,9 +90,34 @@ public class RecommendationService {
                 .map(Map.Entry::getKey)
                 .toList();
 
+        Set<Long> topCandidatesSet = new HashSet<>(topCandidates);
+
+        List<EventSimilarity> candidateSimilarities = similarityRepository
+                .findAllByEventIds(topCandidatesSet);
+
+        Map<Long, List<EventSimilarity>> similaritiesByCandidate = new HashMap<>();
+        for (EventSimilarity es : candidateSimilarities) {
+            long candidate = topCandidatesSet.contains(es.getEvent1()) ? es.getEvent1() : es.getEvent2();
+            long neighbor = es.getEvent1() == candidate ? es.getEvent2() : es.getEvent1();
+
+            if (viewedEventIds.contains(neighbor)) {
+                similaritiesByCandidate
+                        .computeIfAbsent(candidate, k -> new ArrayList<>())
+                        .add(es);
+            }
+        }
+
+        Map<Long, Double> userRatings = interactionRepository
+                .findRatingsByUserIdAndEventIds(userId, viewedEventIds);
+
         return topCandidates.stream()
                 .map(candidateId -> {
-                    double score = predictScore(candidateId, userId, viewedEventIds, maxResults);
+                    double score = predictScore(
+                            candidateId,
+                            similaritiesByCandidate.getOrDefault(candidateId, List.of()),
+                            userRatings,
+                            maxResults
+                    );
                     return RecommendedEventProto.newBuilder()
                             .setEventId(candidateId)
                             .setScore(score)
@@ -107,29 +127,25 @@ public class RecommendationService {
                 .toList();
     }
 
-    private double predictScore(long candidateId, long userId,
-                                Set<Long> viewedEventIds, int maxResults) {
-        List<EventSimilarity> kNearest = similarityRepository.findTopSimilarViewedEvents(
-                candidateId, viewedEventIds, PageRequest.of(0, maxResults)
-        );
-
+    private double predictScore(long candidateId,
+                                List<EventSimilarity> kNearest,
+                                Map<Long, Double> userRatings,
+                                int maxResults) {
         if (kNearest.isEmpty()) return 0.0;
 
-        Set<Long> neighborIds = kNearest.stream()
-                .map(es -> es.getEvent1() == candidateId ? es.getEvent2() : es.getEvent1())
-                .collect(Collectors.toSet());
-
-        Map<Long, Double> ratings = interactionRepository
-                .findRatingsByUserIdAndEventIds(userId, neighborIds);
+        List<EventSimilarity> topK = kNearest.stream()
+                .sorted(Comparator.comparingDouble(EventSimilarity::getSimilarity).reversed())
+                .limit(maxResults)
+                .toList();
 
         double weightedSum = 0.0;
         double similaritySum = 0.0;
 
-        for (EventSimilarity es : kNearest) {
+        for (EventSimilarity es : topK) {
             long neighborId = es.getEvent1() == candidateId
                     ? es.getEvent2() : es.getEvent1();
             double similarity = es.getSimilarity();
-            double userRating = ratings.getOrDefault(neighborId, 0.0);
+            double userRating = userRatings.getOrDefault(neighborId, 0.0);
 
             weightedSum += similarity * userRating;
             similaritySum += similarity;
