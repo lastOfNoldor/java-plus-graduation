@@ -3,7 +3,7 @@ package ru.practicum.request_service.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.practicum.ewm.client.stats.CollectorClient;
+import ru.practicum.ewm.stats.client.CollectorClient;
 import ru.practicum.interaction_api.dto.event.EventInternalDto;
 import ru.practicum.interaction_api.enums.EventState;
 import ru.practicum.interaction_api.enums.RequestStatus;

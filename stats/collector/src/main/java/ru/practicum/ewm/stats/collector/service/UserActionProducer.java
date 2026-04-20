@@ -12,7 +12,7 @@ public class UserActionProducer {
 
     private final KafkaTemplate<Long, UserActionAvro> kafkaTemplate;
     @Value("${spring.kafka.topics.user-actions}")
-    private final String topic;
+    private String topic;
 
     public void send(UserActionAvro action) {
         kafkaTemplate.send(topic, action.getUserId(), action);

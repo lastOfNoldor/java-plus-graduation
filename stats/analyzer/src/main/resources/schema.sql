@@ -17,3 +17,4 @@ CREATE TABLE IF NOT EXISTS similarities (
     similarity FLOAT NOT NULL,
     ts TIMESTAMP WITH TIME ZONE NOT NULL,
     UNIQUE (event1, event2)
+);
