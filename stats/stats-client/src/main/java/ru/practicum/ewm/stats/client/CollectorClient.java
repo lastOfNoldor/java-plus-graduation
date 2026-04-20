@@ -1,6 +1,7 @@
 package ru.practicum.ewm.stats.client;
 
 
+import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.client.inject.GrpcClient;
 import org.springframework.stereotype.Component;
 import ru.practicum.ewm.stats.proto.ActionTypeProto;
@@ -9,6 +10,7 @@ import ru.practicum.ewm.stats.proto.UserActionProto;
 
 import java.time.Instant;
 
+@Slf4j
 @Component
 public class CollectorClient {
 
@@ -28,14 +30,17 @@ public class CollectorClient {
     }
 
     private void sendAction(long userId, long eventId, ActionTypeProto actionType) {
-        UserActionProto request = UserActionProto.newBuilder()
-                .setUserId(userId)
-                .setEventId(eventId)
-                .setActionType(actionType)
-                .setTimestamp(toProtoTimestamp(Instant.now()))
-                .build();
-
-        client.collectUserAction(request);
+        try {
+            UserActionProto request = UserActionProto.newBuilder()
+                    .setUserId(userId)
+                    .setEventId(eventId)
+                    .setActionType(actionType)
+                    .setTimestamp(toProtoTimestamp(Instant.now()))
+                    .build();
+            client.collectUserAction(request);
+        } catch (Exception e) {
+            log.warn("Не удалось отправить действие в Collector: {}", e.getMessage());
+        }
     }
 
     private com.google.protobuf.Timestamp toProtoTimestamp(Instant instant) {
