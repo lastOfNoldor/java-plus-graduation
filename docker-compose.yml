@@ -47,6 +47,9 @@ services:
 
         SELECT 'CREATE DATABASE core_event_service'
         WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'core_event_service')\gexec
+        
+        SELECT 'CREATE DATABASE ewm_analyzer'
+        WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'ewm_analyzer')\gexec
 
         SELECT 'CREATE DATABASE core_category_service'
         WHERE NOT EXISTS (SELECT FROM pg_database WHERE datname = 'core_category_service')\gexec

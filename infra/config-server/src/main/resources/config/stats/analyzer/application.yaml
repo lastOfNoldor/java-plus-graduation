@@ -2,6 +2,9 @@ spring:
   main:
     banner-mode: off
     log-startup-info: false
+  sql:
+    init:
+      mode: always
   datasource:
     url: jdbc:postgresql://localhost:5432/ewm_analyzer
     username: postgres
@@ -9,14 +12,12 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         jdbc.time_zone: UTC
         format_sql: true
-    sql.init.mode: always
-
 logging:
   level:
     ru.practicum: TRACE
@@ -29,8 +30,8 @@ grpc:
 analyzer:
   kafka:
     common-properties:
-      "bootstrap.servers":localhost:9092
-      "enable.auto.commit": false
+      bootstrap.servers: localhost:9092
+      enable.auto.commit: false
     consumers:
       - type: EventSimilarityProcessor
         properties:
