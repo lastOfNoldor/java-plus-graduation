@@ -3,6 +3,7 @@ package ru.practicum.request_service.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.practicum.ewm.stats.client.CollectorClient;
 import ru.practicum.interaction_api.dto.event.EventInternalDto;
 import ru.practicum.interaction_api.enums.EventState;
 import ru.practicum.interaction_api.enums.RequestStatus;
@@ -29,6 +30,7 @@ public class RequestServiceImpl implements RequestService {
     private final RequestMapper requestMapper;
     private final RequestTransactionalService transactionalService;
     private final EventGatewayService eventGatewayService;
+    private final CollectorClient collectorClient;
 
     @Override
     public List<ParticipationRequestDto> getUserRequests(Long userId) {
@@ -38,11 +40,17 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public ParticipationRequestDto createRequest(RequestParamDto paramDto) {
-        log.info("Создание заявки пользователя {} на событие {}", paramDto.getUserId(), paramDto.getEventId());
+        log.info("Создание заявки пользователя {} на событие {}",
+                paramDto.getUserId(), paramDto.getEventId());
         EventInternalDto eventById = eventGatewayService.findById(paramDto.getEventId());
         validateRequestCreation(paramDto.getUserId(), paramDto.getEventId(), eventById);
         Request request = createRequestEntity(eventById, paramDto.getUserId());
         Request savedRequest = transactionalService.save(request);
+
+        if (savedRequest.getStatus() == RequestStatus.CONFIRMED) {
+            collectorClient.sendRegister(paramDto.getUserId(), paramDto.getEventId());
+        }
+
         log.info("Заявка создана с ID: {}", savedRequest.getId());
         return requestMapper.toDto(savedRequest);
     }
