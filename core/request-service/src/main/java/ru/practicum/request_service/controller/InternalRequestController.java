@@ -30,4 +30,9 @@ public class InternalRequestController implements RequestOperations {
         return internalRequestService.countConfirmedRequestsByEventId(eventId);
 
     }
+
+    @Override
+    public boolean hasConfirmedRequest(Long userId, Long eventId) {
+        return internalRequestService.hasConfirmedRequest(userId,eventId);
+    }
 }

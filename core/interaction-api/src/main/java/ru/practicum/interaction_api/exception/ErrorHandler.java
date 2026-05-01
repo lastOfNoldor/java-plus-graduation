@@ -34,8 +34,8 @@ public class ErrorHandler {
     public ApiErrorWrapper handleNotFoundException(NotFoundException e) {
         log.warn("Объект не найден: {}", e.getMessage());
 
-        ApiError apiError = new ApiError("NOT_FOUND", "The required object was not found.",  // ← Стандартный reason
-                e.getMessage(),  // ← Конкретное сообщение
+        ApiError apiError = new ApiError("NOT_FOUND", "The required object was not found.",
+                e.getMessage(),
                 LocalDateTime.now().format(FORMATTER));
 
         return new ApiErrorWrapper(apiError);

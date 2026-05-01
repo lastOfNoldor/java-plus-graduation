@@ -10,7 +10,6 @@ import ru.practicum.interaction_api.enums.EventState;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public interface EventRepository extends JpaRepository<Event, Long>, EventRepositoryCustom {
     @EntityGraph(attributePaths = {"categoryId", "initiatorId"})
     List<Event> findByInitiatorId(Long userId, Pageable pageable);

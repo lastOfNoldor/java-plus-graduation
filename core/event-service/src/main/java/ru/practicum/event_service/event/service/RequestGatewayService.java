@@ -15,6 +15,17 @@ public class RequestGatewayService {
     private final RequestClient requestClient;
 
 
+    @CircuitBreaker(name = "request-service", fallbackMethod = "fallbackHasConfirmedRequest")
+    public boolean hasConfirmedRequest(Long userId, Long eventId) {
+        return requestClient.hasConfirmedRequest(userId, eventId);
+    }
+
+    private boolean hasConfirmedRequest(Long userId, Long eventId, Throwable t) {
+        throw new RuntimeException("Request service is temporarily unavailable. Please try again later.");
+    }
+
+
+
     @CircuitBreaker(name = "request-service", fallbackMethod = "fallbackCountConfirmedRequestsByEventIds")
     public List<Object[]> countConfirmedRequestsByEventIds(List<Long> eventIds) {
         return requestClient.countConfirmedRequestsByEventIds(eventIds);

@@ -64,4 +64,9 @@ public class TransactionalEventService {
         return eventRepository.findByState(eventState, pageable);
     }
 
+    public List<Event> findAllByIds(List<Long> eventIds) {
+        return eventRepository.findAllById(eventIds);
+    }
+
+
 }

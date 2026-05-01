@@ -10,7 +10,6 @@ import ru.practicum.request_service.model.Request;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public interface RequestRepository extends JpaRepository<Request, Long> {
 
     List<Request> findByRequesterId(Long userId);
@@ -20,6 +19,9 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     List<Request> findByIdIn(List<Long> requestIds);
 
     boolean existsByRequesterIdAndEventId(Long userId, Long eventId);
+
+    boolean existsByRequesterIdAndEventIdAndStatus(Long userId, Long eventId, RequestStatus status);
+
 
     @Query("SELECT COUNT(r) FROM Request r WHERE r.eventId = :eventId AND r.status = 'CONFIRMED'")
     Long countConfirmedRequestsByEventId(@Param("eventId") Long eventId);

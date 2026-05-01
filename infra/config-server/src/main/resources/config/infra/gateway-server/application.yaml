@@ -69,17 +69,5 @@ spring:
           predicates:
             - Path=/users/{userId}/events/{eventId}/moderation-comments
 
-        - id: stats-service-post
-          uri: lb://stats-server
-          predicates:
-            - Path=/hit
-            - Method=POST
-
-        - id: stats-service-get
-          uri: lb://stats-server
-          predicates:
-            - Path=/stats
-            - Method=GET
-
 server:
   port: 8080
